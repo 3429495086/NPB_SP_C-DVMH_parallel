@@ -1,0 +1,33 @@
+#!/bin/sh
+
+dvmdir='/home/DVM/dvm_current/dvm_sys'
+export dvmbuild='Version 5.0, revision ddcbe05387be9caa94b19c9ab7fe5ba0ee711391, platform MIC, build 13'
+
+#--------------- One can customize compiler options:
+# export PCC='/opt/intel/impi/current/intel64/bin/mpiicc -g -O3 -qopenmp' # C compiler
+# export PCXX='/opt/intel/impi/current/intel64/bin/mpiicpc -g -O3 -qopenmp -DWITH_CUDA_RT' # C++ compiler
+# export PFORT='/opt/intel/impi/current/intel64/bin/mpiifort -g -O3 -qopenmp' # Fortran compiler
+# export NVCC='/opt/cuda/current/bin/nvcc -arch=sm_75 -O2 -lineinfo -DCUDA_NO_SM_20_INTRINSICS -DPGI_COMPILE_BITCODE -DHAVE_EXPLICIT_CAST -DINTEL_LOGICAL_TYPE' # NVIDIA CUDA C++ compiler
+
+#--------------- One can add libraries (additional linker flags):
+# export USER_LIBS=''
+
+#--------------- One can set launch options:
+# export dvmwait=0 # Wait for task completion
+# export DVMH_PPN='' # Number of processes per node
+# export DVMH_STACKSIZE='' # Stack size to set for the task
+export DVMH_NUM_THREADS='8' # Number of CPU threads per process
+export DVMH_NUM_CUDAS='0' # Number of GPUs per process
+# export DVMH_CPU_PERF='' # Performance of all cores of CPU per process
+# export DVMH_CUDAS_PERF='' # Performance of each GPU per device
+# export DVMH_NO_DIRECT_COPY=0 # Use standard cudaMemcpy functions instead of direct copying with GPU
+# export DVMH_SPECIALIZE_RTC=1 # Use specialization algorithm to reduce CUDA kernel's resources / or compile kernels during execution without changes
+
+#--------------- Debugging options:
+# export DVMH_LOGLEVEL=1 # Levels of debugging: 1 - errors only, 2 - warning, 3 - info, 4 - debug, 5 - trace
+# export DVMH_LOGFILE='dvmh_%d.log' # Log file name for each process
+# export DVMH_COMPARE_DEBUG=0 # An alternative way to turn comparative debugging mode on
+# export dvmsave=0 # Save convertation results
+# export dvmshow=0 # Show commands executed by the DVM driver
+
+exec "$dvmdir/bin/dvm_drv" "$@"
