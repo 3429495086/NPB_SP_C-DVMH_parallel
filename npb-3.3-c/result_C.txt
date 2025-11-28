@@ -1,0 +1,319 @@
+===================================================
+=================== SP original ===================
+===================================================
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark
+
+ No input file inputsp.data. Using compiled defaults
+ Size:  162x 162x 162
+ Iterations:  400    dt:   0.000670
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+ Time step  240
+ Time step  260
+ Time step  280
+ Time step  300
+ Time step  320
+ Time step  340
+ Time step  360
+ Time step  380
+ Time step  400
+ Verification being performed for class C
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 5.8816915818293E+02 5.8816915818290E+02 5.7986806757860E-14
+           2 2.4544176035691E+02 2.4544176035690E+02 3.7634408877485E-14
+           3 3.2938291918508E+02 3.2938291918510E+02 5.7122487375716E-14
+           4 3.0819249718905E+02 3.0819249718910E+02 1.5179517395500E-13
+           5 4.5972237991759E+02 4.5972237991760E+02 2.7449694725241E-14
+ Comparison of RMS-norms of solution error
+           1 2.5981205001830E-01 2.5981205001830E-01 8.5463551405484E-15
+           2 2.5908889223144E-02 2.5908889223150E-02 2.3353820505746E-13
+           3 5.1328864163197E-02 5.1328864163200E-02 6.7592513657082E-14
+           4 4.8060734194540E-02 4.8060734194540E-02 3.8981954509297E-15
+           5 5.4833774913005E-01 5.4833774913010E-01 8.5240145167590E-14
+ Verification Successful
+
+
+ SP Benchmark Completed.
+ Class           =                        C
+ Size            =            162x 162x 162
+ Iterations      =                      400
+ Time in seconds =                   444.39
+ Mop/s total     =                  3263.13
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              27 Nov 2025
+
+ Compile options:
+    CC           = ../dvm c
+    CLINK        = ../dvm link
+    C_LIB        = -lm
+    C_INC        = -I ../common
+    CFLAGS       = -c
+    CLINKFLAGS   = (none)
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+
+
+ 
+===================================================
+=============== SP cpu = 2 parallel ===============
+===================================================
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark
+
+ No input file inputsp.data. Using compiled defaults
+ Size:  162x 162x 162
+ Iterations:  400    dt:   0.000670
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+ Time step  240
+ Time step  260
+ Time step  280
+ Time step  300
+ Time step  320
+ Time step  340
+ Time step  360
+ Time step  380
+ Time step  400
+ Verification being performed for class C
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 5.8816915818294E+02 5.8816915818290E+02 6.4365355501224E-14
+           2 2.4544176035691E+02 2.4544176035690E+02 3.8792390689100E-14
+           3 3.2938291918508E+02 3.2938291918510E+02 4.7975986375979E-14
+           4 3.0819249718905E+02 3.0819249718910E+02 1.5124185011312E-13
+           5 4.5972237991759E+02 4.5972237991760E+02 3.0664523837206E-14
+ Comparison of RMS-norms of solution error
+           1 2.5981205001830E-01 2.5981205001830E-01 1.6665392524069E-14
+           2 2.5908889223146E-02 2.5908889223150E-02 1.6042360645576E-13
+           3 5.1328864163197E-02 5.1328864163200E-02 6.2861037701086E-14
+           4 4.8060734194539E-02 4.8060734194540E-02 2.8731144249444E-14
+           5 5.4833774913006E-01 5.4833774913010E-01 6.6815315689560E-14
+ Verification Successful
+
+
+ SP Benchmark Completed.
+ Class           =                        C
+ Size            =            162x 162x 162
+ Iterations      =                      400
+ Time in seconds =                   233.27
+ Mop/s total     =                  6216.30
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              28 Nov 2025
+
+ Compile options:
+    CC           = ../dvm c
+    CLINK        = ../dvm link
+    C_LIB        = -lm
+    C_INC        = -I ../common
+    CFLAGS       = -c
+    CLINKFLAGS   = (none)
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+ 
+===================================================
+=============== SP cpu = 4 parallel ===============
+===================================================
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark
+
+ No input file inputsp.data. Using compiled defaults
+ Size:  162x 162x 162
+ Iterations:  400    dt:   0.000670
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+ Time step  240
+ Time step  260
+ Time step  280
+ Time step  300
+ Time step  320
+ Time step  340
+ Time step  360
+ Time step  380
+ Time step  400
+ Verification being performed for class C
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 5.8816915818294E+02 5.8816915818290E+02 6.9970746821151E-14
+           2 2.4544176035691E+02 2.4544176035690E+02 4.1224152493491E-14
+           3 3.2938291918509E+02 3.2938291918510E+02 4.2280995187464E-14
+           4 3.0819249718905E+02 3.0819249718910E+02 1.5013520242937E-13
+           5 4.5972237991759E+02 4.5972237991760E+02 3.0417229290132E-14
+ Comparison of RMS-norms of solution error
+           1 2.5981205001830E-01 2.5981205001830E-01 5.3414719628427E-15
+           2 2.5908889223146E-02 2.5908889223150E-02 1.6256615879573E-13
+           3 5.1328864163198E-02 5.1328864163200E-02 4.0420323166935E-14
+           4 4.8060734194539E-02 4.8060734194540E-02 2.1512263784760E-14
+           5 5.4833774913006E-01 5.4833774913010E-01 6.9244963532816E-14
+ Verification Successful
+
+
+ SP Benchmark Completed.
+ Class           =                        C
+ Size            =            162x 162x 162
+ Iterations      =                      400
+ Time in seconds =                   134.83
+ Mop/s total     =                 10755.10
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              28 Nov 2025
+
+ Compile options:
+    CC           = ../dvm c
+    CLINK        = ../dvm link
+    C_LIB        = -lm
+    C_INC        = -I ../common
+    CFLAGS       = -c
+    CLINKFLAGS   = (none)
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+ 
+===================================================
+=============== SP cpu = 8 parallel ===============
+===================================================
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER-C) - SP Benchmark
+
+ No input file inputsp.data. Using compiled defaults
+ Size:  162x 162x 162
+ Iterations:  400    dt:   0.000670
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+ Time step  120
+ Time step  140
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+ Time step  240
+ Time step  260
+ Time step  280
+ Time step  300
+ Time step  320
+ Time step  340
+ Time step  360
+ Time step  380
+ Time step  400
+ Verification being performed for class C
+ accuracy setting for epsilon =  1.0000000000000E-08
+ Comparison of RMS-norms of residual
+           1 5.8816915818294E+02 5.8816915818290E+02 7.0743904244589E-14
+           2 2.4544176035691E+02 2.4544176035690E+02 4.4582299747175E-14
+           3 3.2938291918509E+02 3.2938291918510E+02 4.1763268715780E-14
+           4 3.0819249718905E+02 3.0819249718910E+02 1.4718414193936E-13
+           5 4.5972237991758E+02 4.5972237991760E+02 4.0432658446639E-14
+ Comparison of RMS-norms of solution error
+           1 2.5981205001830E-01 2.5981205001830E-01 1.6451733645556E-14
+           2 2.5908889223146E-02 2.5908889223150E-02 1.6819035868817E-13
+           3 5.1328864163198E-02 5.1328864163200E-02 4.3799948849789E-14
+           4 4.8060734194539E-02 4.8060734194540E-02 2.5121704017102E-14
+           5 5.4833774913006E-01 5.4833774913010E-01 6.7220256996769E-14
+ Verification Successful
+
+
+ SP Benchmark Completed.
+ Class           =                        C
+ Size            =            162x 162x 162
+ Iterations      =                      400
+ Time in seconds =                    96.31
+ Mop/s total     =                 15056.33
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              28 Nov 2025
+
+ Compile options:
+    CC           = ../dvm c
+    CLINK        = ../dvm link
+    C_LIB        = -lm
+    C_INC        = -I ../common
+    CFLAGS       = -c
+    CLINKFLAGS   = (none)
+    RAND         = (none)
+
+--------------------------------------
+ Please send all errors/feedbacks to:
+ Center for Manycore Programming
+ cmp@aces.snu.ac.kr
+ http://aces.snu.ac.kr
+--------------------------------------
+
+ 
+ Speedup (ускорение) для SP, CLASS C
+
+T_serial = 444.39 сек
+
+Кол-во CPU | Время (сек) | Ускорение
+    1 	   |   444.39 	 |  1.00x
+    2 	   |   233.27    |  1.91x
+    4      |   134.83    |  3.30x
+    8      |   96.31     |  4.61x

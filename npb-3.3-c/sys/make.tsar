@@ -1,0 +1,59 @@
+.PHONY: orig
+orig:
+	$(foreach orig,$(MERGE_ORIGS) $(SINGLE_ORIGS), $(if $(wildcard $(orig)),mv $(orig) $(basename $(orig));))
+
+wc:
+	- ${WC} ${SRC} ${HEAD}
+
+dyna-sroa: $(MERGE_PCHS) $(SINGLE_OBJS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -emit-llvm
+	${OPT} -sroa -S ${MERGE_LL} -o ${MERGE_LL}
+	${TSAR} ${MERGE_LL} -instr-llvm
+	${LLC}  ${LLFLAGS} ${MERGE_LL} -o ${MERGE_OBJ}
+	${CXX} ${CLINKFLAGS} ${MERGE_OBJ} ${SINGLE_OBJS} ${DYNA_LIB} ${CXXFLAGS} ${C_LIB} -o ${PROGRAM}
+
+dyna: $(MERGE_PCHS) $(SINGLE_OBJS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -instr-llvm
+	${LLC}  ${LLFLAGS} ${MERGE_LL} -o ${MERGE_OBJ}
+	${CXX} ${CLINKFLAGS} ${MERGE_OBJ} ${SINGLE_OBJS} ${DYNA_LIB} ${CXXFLAGS} ${C_LIB} -o ${PROGRAM}
+
+anls: $(MERGE_PCHS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -print-only=da-di -print-step=3
+
+inline: $(MERGE_PCHS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -clang-inline
+
+check: $(MERGE_PCHS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -check
+
+llvm-link: $(LLS)
+	${LL_LINK} ${LLS} -S -o ${MERGE_LL}
+
+anls-link: llvm-link
+	${TSAR} ${MERGE_LL} -print-only=da-di -print-step=3
+
+dyna-link: llvm-link
+	${TSAR} ${MERGE_LL} -instr-llvm
+	${LLC}  ${LLFLAGS} ${MERGE_LL} -o ${MERGE_OBJ}
+	${CXX} ${CLINKFLAGS} ${MERGE_OBJ} ${DYNA_LIB} ${CXXFLAGS} ${C_LIB} -o ${PROGRAM}
+
+dyna-link-sroa: llvm-link
+	${OPT} -sroa -S ${MERGE_LL} -o ${MERGE_LL}
+	${TSAR} ${MERGE_LL} -instr-llvm
+	${LLC}  ${LLFLAGS} ${MERGE_LL} -o ${MERGE_OBJ}
+	${CXX} ${CLINKFLAGS} ${MERGE_OBJ} ${DYNA_LIB} ${CXXFLAGS} ${C_LIB} -o ${PROGRAM}
+
+ilp: $(MERGE_PCHS)
+	${TSAR} ${TSAR_LINKFLAGS} ${MERGE_PCHS} -print-only=ilp-data-distribution -print-step=2
+
+exec: $(OBJS)
+	${CLINK} ${CLINKFLAGS} -o ${PROGRAM} ${OBJS} ${C_LIB}
+
+%.o: %.c
+	${CCOMPILE} $< -o $@
+
+%.ast: %.c
+	${TSAR_COMPILE} $< -o $@
+
+%.ll: %.c
+	${TSAR_LL} $< -o $@
