@@ -43,15 +43,25 @@ DVM-система предназначена для разработки пар
 
 ## 🗂 4. Структура репозитория
 
-npb-3.3-c/
-          SP/          ← модифицированные файлы теста SP (CPU DVMH)
-          BT/
-          LU/
-          …
-          common/
-          config/
-          sys/
-          README.md
+```
+NPB_SP_cpu_parallel_homework_2/
+│
+├── npb-3.3-c/
+│   ├── SP/          ← модифицированные файлы теста SP (CPU DVMH)
+│   ├── BT/
+│   ├── LU/
+│   ├── CG/
+│   ├── EP/
+│   ├── FT/
+│   ├── IS/
+│   ├── MG/
+│   ├── UA/
+│   ├── common/
+│   ├── config/
+│   └── sys/
+│
+└── README.md
+```
 
 ---
 
