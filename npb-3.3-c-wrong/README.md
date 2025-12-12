@@ -1,47 +1,96 @@
-# Parallelization of NAS Parallel Benchmarks 3.3 (NPB)
+# npb-3.3-c-wrong
 
-This repository represents parallelization process of NAS Parallel Benchmarks 3.3 as a sequence of transform passes. It also contains `Makefile` which simplify analysis and transformation of NPB. TSAR analyzer is used to perform static analysis and source-to-source transformation. DYNA analyzer allows to perform dynamic analysis.
+⚠️ Версия для отладки GPU (ошибочный вариант)
 
-Let us consider the following example:
-```bash
-make lu CLASS=S ACTION=inline
-```
+---
 
-In this example we perform the `inline` action to perform source-level function inlining for LU benchmark. Note, that we should place appropriate directives into a source code to mark calls which should be inlined.
+## **Описание проблемы (отладка GPU-параллелизации)**
 
-To specify a size of an input of a benchmark `CLASS` is used. Note, that it should be set even in case of source code analysis to avoid compilation errors.
+**В процессе параллелизации бенчмарка NPB SP с использованием модели C-DVMH было обнаружено, что процедура `z_solve` при выполнении на графическом ускорителе приводит к ошибке некорректного обращения к памяти, в то время как тот же самый код корректно работает при выполнении на центральном процессоре.**
 
-The following default actions is available:
+### Наблюдаемое поведение
 
-- `exec` - compile a specified benchmark,
-- `clean` - remove intermediate files,
-- `anls` - perform static analysis with TSAR,
-- `dyna` - merge AST-level representation for files of a specified benchmark (files which prevent merge action will not be analyzed), perform IR-level instrumentation and link a specified benchmark with DYNA, then it is possible to run executable file and to obtain results of dynamic analysis,
-- `dyna-sroa` - run SROA (Scalar Replacements Of Aggregates) pass before IR-level instrumentation, this disables dynamic analysis of memory references (variables) which can be promoted to be register references,
-- `dyna` - perform IR-level instrumentation and link a specified benchmark with DYNA, then it is possible to run executable file and to obtain results of dynamic analysis,
-- `llvm-link` - build LLVM IR for all files of a specified benchmark and link all these *.ll files using `llvm-link` to obtain a single *.ll file for the whole benchmark,
-- `anls-link` - analyze *.ll file which is a result of `llvm-link` target,
-- `dyna-link` - perform IR-level instrumentation for a single *.ll which is a result of `llvm-link` target,
-- `dyna-link-sroa` - run SROA (Scalar Replacements Of Aggregates) pass before IR-level instrumentation, this disables dynamic analysis of memory references (variables) which can be promoted to be register references,
-- `wc` - compute the number of lines in a specified benchmark,
-- `check` - use TSAR to check sources, for example, the `#pragma spf check nomacro` directive allows to check absence of macros in a specified source range,
-- `callgraph` - build callgraph for a specified test, then it can be visualized using GraphViz,
-- `inline` - perform source-level inlining using TSAR.
+- Процедуры `x_solve` и `y_solve` были успешно переписаны с использованием директивы  
+  `#pragma dvm region local(lhs, lhsp, lhsm)`  
+  и корректно выполняются на GPU. Результаты полностью совпадают с последовательной версией, ошибки типа NaN или выхода за границы памяти не возникают.
+- При применении **аналогичного подхода** к процедуре `z_solve`:
+  - при выполнении на GPU (без использования `targets(HOST)`) программа завершается **уже на первом временном шаге** с ошибкой, зафиксированной системой исполнения DVMH в точке синхронизации после выполнения GPU-цикла:
+    ```
+    CUDA error occured in "cudaDeviceSynchronize()":
+    Error #700 - "an illegal memory access was encountered"
+    ```
+    При этом выводится следующая диагностическая информация:
+    ```
+    USRFILE=x_solve.c; USRLINE=57;
+    SYSFILE=loop.cpp; SYSLINE=2238
+    ```
+    Такая диагностика означает, что **внутри GPU-kernel’а, сгенерированного DVMH для директивы `#pragma dvm parallel`, произошло некорректное обращение к памяти (например, выход за границы массива или доступ по недопустимому адресу)**.  
+    Однако данная ошибка **не выявляется непосредственно в момент выполнения некорректной инструкции**, а обнаруживается только на этапе последующей синхронизации (`cudaDeviceSynchronize()`), в результате чего указанные строки исходного кода соответствуют месту запуска или завершения GPU-кernel’а, а **не обязательно точной строке, где произошло обращение за пределы памяти**.
+  - при принудительном выполнении того же кода на CPU с использованием `targets(HOST)` программа корректно завершается и успешно проходит верификацию.
+- При использовании исходной (последовательной) версии `z_solve` программа корректно работает и на GPU.
 
-All mentioned actions are specified in `sys/make.tsar` file.
+---
 
-The following variables should be set in file `config/make.def`:
+Данный каталог содержит **экспериментальную версию кода, в которой воспроизводится описанная ошибка GPU-параллелизации**,  
+и предназначен для анализа и демонстрации проблем, возникающих на этапе выполнения вычислений на графическом ускорителе.
 
-- `${LLC}` - compiler for LLVM IR,
-- `${PCHC}` - compiler for Clang pre-compiled headers,
-- `${TSAR}` - Traits Static Analyzer (TSAR),
-- `${OPT}` - LLVM opt tool,
-- `${CC}` - compiler for C sources,
-- `${CXX}` - compiler for C++ sources,
-- `${WC}` - tool which counts number of lines in a file,
-- `${DYNA_LIB}` - path to DYNA analyzer,
-- `${CFLAGS}`, `${LLFLAGS}`, `${PCHFLAGS}`, `${CXXFLAGS}` - compiler flags,
-- `${CLINKFLAGS}` - link-time flags,
-- `${TSAR_FLAGS}` - flags which specify how TSAR should emit pre-compiled headers,
-- `${TSAR_LINKFLAGS}` - flags which specify how TSAR should merge pre-compiled headers before analysis,
-- some other flags are also available.
+---
+
+## Общие сведения
+
+- Код, представленный в данном каталоге, **не является окончательной корректной реализацией**
+- Исходной базой послужила версия из каталога `npb-3.3-c/SP`
+- Ошибка проявляется исключительно на этапе выполнения на GPU и связана с:
+  - разбиением вычислений на `region`
+  - управлением согласованностью данных (`actual / get_actual`)
+  - различиями в поведении CPU и GPU при выполнении параллельного кода
+
+---
+
+## Модифицированные файлы
+
+В процессе попыток GPU-параллелизации были изменены или использовались для отладки следующие файлы:
+
+- `add.c`
+- `error.c`
+- `exact_rhs.c`
+- `initialize.c`
+- `ninvr.c`
+- `pinvr.c`
+- `rhs.c`
+- `txinvr.c`
+- `tzetar.c`
+- `x_solve.c`
+- `y_solve.c`
+- `z_solve.c`
+
+---
+
+## Объединение файлов (экспериментальная структура)
+
+На этапе отладки GPU-параллелизации, с целью упрощения анализа и уменьшения количества межфайловых зависимостей,  
+основная вычислительная логика следующих процедур:
+
+- `tzetar.c`
+- `x_solve.c`
+- `y_solve.c`
+- `z_solve.c`
+- `ninvr.c`
+- `pinvr.c`
+
+была **временно объединена в одном файле `x_solve.c`**.
+
+Данное объединение использовалось исключительно в целях локализации и анализа ошибки  
+и **не рассматривается как рекомендуемая финальная структура программы**.
+
+---
+
+## Назначение каталога
+
+Данный каталог сохранён для:
+
+- демонстрации проблем, возникших при GPU-параллелизации в модели C-DVMH
+- сравнения корректной CPU-версии и ошибочной GPU-версии
+- последующего анализа, исправления и воспроизводимости ошибки
+
+👉 **Окончательная корректная версия CPU-параллельной реализации расположена в корневом каталоге репозитория: `npb-3.3-c/`**
